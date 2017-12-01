@@ -167,3 +167,99 @@ TesseractPlugin.recognizeText(imageData, language, function(recognizedText) {
 });
 ```
 
+## Usage - Using Phonegap and JavaScript 
+The following code was tested on PhoneGap. Moreover, it does NOT use any JS frameworks, i.e. Angular. 
+
+### A. HTML 
+<!-- Add the following to your HTML File, e.g. index.html --> 
+..... 
+<button class="camera-control" onclick="capturePhoto();">Capture Photo</button> 
+<div style="text-align:center; margin:20px;">
+        <img id="cameraPic" src="" style="width:60px;height:60px;" />
+</div>
+......
+
+### B. Download the language
+// Add the following to your JS script, e.g. my-app.js. 
+
+var language = 'eng'; // for the English language 
+
+$$(document).on('deviceready', function() {
+    console.log("Device is ready!");
+	abc = LoadLang(language); // Load the language, which will be used to recognise/recognize your text. 
+});
+
+function LoadLang(language) {
+	TesseractPlugin.loadLanguage(language
+		, function(response) {
+			navigator.notification.alert(
+				'language loaded successfully! - response: ' + response,  
+				dummyFunction 
+			);
+		  
+		}
+		, function(reason) {
+			navigator.notification.alert(
+				'Error on loading OCR file for your language. ' + reason, 
+				dummyFunction 
+			);
+		}	
+	);
+}
+
+### C. Get image data from your photo
+// Add the following to your JS script, e.g. my-app.js. 
+
+// To be called by clicking on a button 
+function capturePhoto(){
+	navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50 
+		,destinationType: Camera.DestinationType.DATA_URL 
+	});
+}
+
+function uploadPhoto(imageData){
+    var cameraPic = document.getElementById("cameraPic");
+	cameraPic.src = "data:image/jpeg;base64," + imageData;
+	
+	// Successful upload to the server
+	navigator.notification.alert(
+		'Your Photo has been uploaded',  // message
+		recogniseText, 					// callback function 
+	    'Photo Uploaded',              // title
+	    'OK'                          // buttonName
+	);
+
+	// upload has failed Fail
+	if (failedToUpload){
+		navigator.notification.alert(
+			'Your Photo has failed to upload',
+			failedDismissed,
+			'Photo Not Uploaded',
+			'OK'
+			);
+	} 
+}
+
+### D. Recognize text from image
+// Add the following to your JS script, e.g. my-app.js. 
+
+// The following function is NOT, yet, working for me. I am still trying to fix it. Any help, please... 
+function recogniseText(imageData) {
+	TesseractPlugin.recognizeText(imageData, language
+		, function(recognizedText) {
+			navigator.notification.alert(
+				'recognizing text succeded: ' + recognizedText, 
+				dummyFunction 
+			);
+		}
+		, function(reason) {
+			navigator.notification.alert(
+				'Error on recognizing text from image: ' + reason, 
+				dummyFunction 
+			);
+		}
+	);
+}
+
+function dummyFunction(){
+} 
