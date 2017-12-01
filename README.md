@@ -75,13 +75,11 @@ dependencies {
     debugCompile project(path: "CordovaLib", configuration: "debug")
     releaseCompile project(path: "CordovaLib", configuration: "release")
     // SUB-PROJECT DEPENDENCIES END
-    compile project(':tess-two')
+    compile 'com.rmtheis:tess-two:8.0.0'
 }
 ```
 
-#### 2.4 Edit `your-project/platforms/android/cordova/lib/build.js` file that generates `settings.gradle` file:
-
-* Edit `your-project/platforms/android/cordova/lib/builders/GradleBuilder.js` and replace the `fs.writeFileSync()` function call after `// Write the settings.gradle file.` (at line 101) with:
+#### 2.4 Edit `your-project/platforms/android/cordova/lib/builders/GradleBuilder.js` and replace the `fs.writeFileSync()` function call after `// Write the settings.gradle file.` (at line 101) with:
 ```bash
 //##### EDITED - Added tess-two library dependency
 fs.writeFileSync(path.join(this.root, 'settings.gradle'),
