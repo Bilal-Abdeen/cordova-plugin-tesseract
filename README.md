@@ -224,7 +224,7 @@ function uploadPhoto(imageData){
 	// Successful upload to the server
 	navigator.notification.alert(
 		'Your Photo has been uploaded',  // message
-		recogniseText, 					// callback function 
+		recogniseText(imageData),  	// callback function 
 	    'Photo Uploaded',              // title
 	    'OK'                          // buttonName
 	);
@@ -243,7 +243,6 @@ function uploadPhoto(imageData){
 ### D. Recognize text from image
 // Add the following to your JS script, e.g. my-app.js. 
 
-// The following function is NOT, yet, working for me. I am still trying to fix it. Any help, please... 
 function recogniseText(imageData) {
 	TesseractPlugin.recognizeText(imageData, language
 		, function(recognizedText) {
